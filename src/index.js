@@ -100,7 +100,8 @@ class I18nYii2ExtractPlugin {
     this.functionName = this.options.functionName || 'i18n.t';
     this.hideMessage = this.options.hideMessage || false;
     this.outputFileName = this.options.outputFileName || '[name].json';
-    this.outputSpace = this.options.outputSpace || 2;
+    // use default value only in case of undefined
+    ({ outputSpace: this.outputSpace = 2 } = this.options);
   }
 
   apply(compiler) {

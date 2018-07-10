@@ -49,7 +49,8 @@ where `optionsObj` is an object with following possible properties:
     Following patterns are allowed:
     *   `[name]`: entry chunk name
 *   `outputSpace`: the default value is `2`. The value will pass as 3rd `space` argument to
-    `JSON.stringify()` to control pretty print.
+    `JSON.stringify()` to control pretty print. You can use `null`, `0`, or `""` to disable pretty
+    print. The value `undefined` will fallback to default value `2`.
 
 [source-url]: https://github.com/webpack-contrib/i18n-webpack-plugin
 [source-fork-base-url]: https://github.com/webpack-contrib/i18n-webpack-plugin/commit/8a51991b5b9d7c0dd952c7470a51f0a2ac4049c1

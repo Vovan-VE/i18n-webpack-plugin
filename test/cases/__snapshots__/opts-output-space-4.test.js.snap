@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`opts-output-space-4.test.js 1`] = `
+"{
+    \\"category1\\": {
+        \\"Message 1\\": \\"\\",
+        \\"Message 2\\": \\"\\"
+    },
+    \\"category2\\": {
+        \\"Message 3\\": \\"\\"
+    }
+}"
+`;
