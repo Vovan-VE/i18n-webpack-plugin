@@ -1,8 +1,7 @@
 i18n-yii2-extract-webpack-plugin
 --------------------------------
 
-Fork based on [i18n Plugin][source-url]
-at [8a51991b5b][source-fork-base-url]
+Fork based on [i18n Plugin][source-url] at [8a51991b5b][source-fork-base-url]
 which was a head of branch [`feature/webpack_4`][source-form-branch-url]
 at the moment of fork.
 
@@ -19,15 +18,16 @@ Install
 -------
 
 ```bash
-npm i -D i18n-webpack-plugin
+npm i -D i18n-yii2-extract-webpack-plugin
 ```
 
-Usage
------
+Description
+-----------
 
 This plugin creates/updates separate JSON files containing all source messages for translation.
 Each entry produce separate JSON file. This may duplicate messages in case of multiple entries,
-so later processing and/or automation is recommended (and is not part of this plugin).
+so later processing and/or automation is recommended (and is not, and will not a task for this
+plugin).
 
 Options
 -------
@@ -43,7 +43,7 @@ where `optionsObj` is an object with following possible properties:
 
 *   `functionName`: the default value is `"i18n.t"`, you can change it to other function name.
 *   `hideMessage`: the default value is `false`, which will show the warning/error message.
-    If set to `true`, the message will be hidden.
+    If set to `true`, the message will be hidden. Currently this option is unused, but reserved.
 *   `outputFileName`: the default value is `"[name].json"`, which will control generated file name
     to save extracted messages. Relative path will resolve from configured output path.
     Following patterns are allowed:

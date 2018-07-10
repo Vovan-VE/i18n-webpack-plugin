@@ -1,19 +1,12 @@
 /*
   MIT License http://www.opensource.org/licenses/mit-license.php
   Author Tobias Koppers @sokra
+  Contributor Vovan-VE <vovan-ve@yandex.ru>
 */
 import { relative, isAbsolute } from 'path';
 import ConstDependency from 'webpack/lib/dependencies/ConstDependency';
 import NullFactory from 'webpack/lib/NullFactory';
 import RawSource from 'webpack-sources/lib/RawSource';
-
-// const getRootModule = (module) => {
-//   let root = module;
-//   while (root.issuer) {
-//     root = root.issuer;
-//   }
-//   return root;
-// };
 
 const makeModulesMap = (modules) => {
   const map = {};
@@ -91,13 +84,14 @@ const buildUpdate = (collected, parsedModules, modules) => {
 
 /**
  *
- * @param {object|string} Options object or obselete functionName string
+ * @param {object|string} Options object
  * @constructor
  */
 class I18nYii2ExtractPlugin {
   constructor(options) {
     this.options = options || {};
     this.functionName = this.options.functionName || 'i18n.t';
+    // currently unused but reserved
     this.hideMessage = this.options.hideMessage || false;
     this.outputFileName = this.options.outputFileName || '[name].json';
     // use default value only in case of undefined
