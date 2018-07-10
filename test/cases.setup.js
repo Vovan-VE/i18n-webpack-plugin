@@ -1,6 +1,6 @@
 import { basename, dirname, join } from 'path';
 import webpack from 'webpack';
-import I18nPlugin from '../src';
+import I18nYii2ExtractPlugin from '../src';
 
 export default function processFile(entry, ...pluginOpts) {
   const resolvedEntry = join(__dirname, 'cases', entry);
@@ -15,7 +15,7 @@ export default function processFile(entry, ...pluginOpts) {
       libraryTarget: 'commonjs2',
     },
     plugins: [
-      new I18nPlugin(...pluginOpts),
+      new I18nYii2ExtractPlugin(...pluginOpts),
     ],
   });
 

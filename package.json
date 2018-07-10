@@ -1,8 +1,11 @@
 {
-  "name": "i18n-webpack-plugin",
+  "name": "i18n-yii2-extract-webpack-plugin",
   "version": "1.0.0",
   "author": "Tobias Koppers @sokra",
-  "description": "Embed localization into your bundle",
+  "contributors": [
+    "Vovan-VE <vovan-ve@yandex.ru>"
+  ],
+  "description": "Extract localization from source on build",
   "main": "dist/cjs.js",
   "files": [
     "dist"
