@@ -1,21 +1,49 @@
-import { basename, dirname, join } from 'path';
+import { basename, join } from 'path';
 import webpack from 'webpack';
 import I18nYii2ExtractPlugin from '../src';
 
-export default function processFile(entry, ...pluginOpts) {
-  const resolvedEntry = join(__dirname, 'cases', entry);
-  const resolvedOutput = join(dirname(resolvedEntry), `${basename(resolvedEntry, '.code.js')}.tmp.js`);
+const casesPath = join(__dirname, 'cases');
+
+export default function processFile(entry, pluginOpts) {
+  let resolvedEntry;
+  let resolvedOutput;
+  let pluginOutput;
+  const result = {};
+
+  if (Array.isArray(entry)) {
+    resolvedEntry = {};
+    resolvedOutput = '[name].tmp.js';
+    pluginOutput = '[name].tmp.json';
+    const pluginOutputResolved = {};
+    result.files = pluginOutputResolved;
+    entry.forEach((e) => {
+      const eBasename = basename(e, '.code.js');
+      const ePluginOutputBase = `${eBasename}.tmp.json`;
+      resolvedEntry[eBasename] = join(casesPath, e);
+      pluginOutputResolved[ePluginOutputBase] = join(casesPath, ePluginOutputBase);
+    });
+  } else {
+    resolvedEntry = join(casesPath, entry);
+    resolvedOutput = `${basename(entry, '.code.js')}.tmp.js`;
+    const pluginOutputBasename = `${basename(entry, '.code.js')}.tmp.json`;
+    // here use absolute path to unsure it works
+    pluginOutput = join(casesPath, pluginOutputBasename);
+    result.file = pluginOutput;
+  }
 
   const compiler = webpack({
     mode: 'none',
     entry: resolvedEntry,
     output: {
-      filename: basename(resolvedOutput),
-      path: dirname(resolvedOutput),
+      filename: resolvedOutput,
+      path: casesPath,
       libraryTarget: 'commonjs2',
     },
     plugins: [
-      new I18nYii2ExtractPlugin(...pluginOpts),
+      new I18nYii2ExtractPlugin({
+        ...pluginOpts,
+        outputFileName: pluginOutput,
+      }),
     ],
   });
 
@@ -32,7 +60,7 @@ export default function processFile(entry, ...pluginOpts) {
       }
 
       resolve({
-        file: resolvedOutput,
+        ...result,
         stats,
       });
     });

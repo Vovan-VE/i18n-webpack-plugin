@@ -1,2 +1,2 @@
-/* globals i18n */
-exports.key = i18n('key');
+/* globals __ */
+exports.key = __('category', 'key');

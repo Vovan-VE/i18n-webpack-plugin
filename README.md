@@ -26,7 +26,8 @@ Usage
 -----
 
 This plugin creates/updates separate JSON files containing all source messages for translation.
-
+Each entry produce separate JSON file. This may duplicate messages in case of multiple entries,
+so later processing and/or automation is recommended (and is not part of this plugin).
 
 Options
 -------
@@ -40,10 +41,15 @@ plugins: [
 
 where `optionsObj` is an object with following possible properties:
 
-*   `functionName`: the default value is `i18n.t`, you can change it to other function name.
+*   `functionName`: the default value is `"i18n.t"`, you can change it to other function name.
 *   `hideMessage`: the default value is `false`, which will show the warning/error message.
     If set to `true`, the message will be hidden.
-
+*   `outputFileName`: the default value is `"[name].json"`, which will control generated file name
+    to save extracted messages. Relative path will resolve from configured output path.
+    Following patterns are allowed:
+    *   `[name]`: entry chunk name
+*   `outputSpace`: the default value is `2`. The value will pass as 3rd `space` argument to
+    `JSON.stringify()` to control pretty print.
 
 [source-url]: https://github.com/webpack-contrib/i18n-webpack-plugin
 [source-fork-base-url]: https://github.com/webpack-contrib/i18n-webpack-plugin/commit/8a51991b5b9d7c0dd952c7470a51f0a2ac4049c1

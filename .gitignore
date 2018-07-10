@@ -16,3 +16,4 @@ Thumbs.db
 *.sublime-workspace
 
 /test/cases/*.tmp.js
+/test/cases/*.tmp.json
