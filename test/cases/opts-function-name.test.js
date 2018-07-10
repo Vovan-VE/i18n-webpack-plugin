@@ -1,3 +1,4 @@
+import fs from 'fs';
 import processFile from '../cases.setup';
 
 describe('options.functionName', () => {
@@ -11,7 +12,7 @@ describe('options.functionName', () => {
 
       return processFile('opts-function-name.code.js', options)
         .then(({ file }) => {
-          extracted = require.requireActual(file);
+          extracted = fs.readFileSync(file, 'utf8');
         });
     });
 

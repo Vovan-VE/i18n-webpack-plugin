@@ -1,3 +1,4 @@
+import fs from 'fs';
 import processFile from '../cases.setup';
 
 describe('extract-entry-map', () => {
@@ -9,11 +10,17 @@ describe('extract-entry-map', () => {
   ])
     .then(({ files }) => {
       Object.keys(files).forEach((name) => {
-        extracted[name] = require.requireActual(files[name]);
+        extracted[name] = {
+          name,
+          content: fs.readFileSync(files[name], 'utf8'),
+        };
       });
     }));
 
   it('should return extracted keys', () => {
-    expect(extracted).toMatchSnapshot();
+    Object.keys(extracted).forEach((name) => {
+      expect(extracted[name]).toMatchSnapshot();
+    });
+    // expect(extracted).toMatchSnapshot();
   });
 });

@@ -2,26 +2,33 @@
 
 exports[`extract-entry-map should return extracted keys 1`] = `
 Object {
-  "extract-entry-map-bar.tmp.json": Object {
-    "category2": Object {
-      "Message 3": "",
-    },
-    "category3": Object {
-      "Message 4": "",
-    },
-    "category4": Object {
-      "Message 5": "",
-    },
+  "content": "{
+  \\"category2\\": {
+    \\"Message 3\\": \\"\\"
   },
-  "extract-entry-map-foo.tmp.json": Object {
-    "category1": Object {
-      "Message 1": "",
-      "Message 2": "",
-    },
-    "category2": Object {
-      "Message 3": "",
-      "Message imported": "",
-    },
+  \\"category3\\": {
+    \\"Message 4\\": \\"\\"
   },
+  \\"category4\\": {
+    \\"Message 5\\": \\"\\"
+  }
+}",
+  "name": "extract-entry-map-bar.tmp.json",
+}
+`;
+
+exports[`extract-entry-map should return extracted keys 2`] = `
+Object {
+  "content": "{
+  \\"category1\\": {
+    \\"Message 1\\": \\"\\",
+    \\"Message 2\\": \\"\\"
+  },
+  \\"category2\\": {
+    \\"Message 3\\": \\"\\",
+    \\"Message imported\\": \\"\\"
+  }
+}",
+  "name": "extract-entry-map-foo.tmp.json",
 }
 `;

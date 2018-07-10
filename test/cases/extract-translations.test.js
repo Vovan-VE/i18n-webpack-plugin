@@ -1,3 +1,4 @@
+import fs from 'fs';
 import processFile from '../cases.setup';
 
 describe('extract-translations', () => {
@@ -5,7 +6,7 @@ describe('extract-translations', () => {
 
   beforeAll(() => processFile('extract-translations.code.js')
       .then(({ file }) => {
-        extracted = require.requireActual(file);
+        extracted = fs.readFileSync(file, 'utf8');
       }));
 
   it('should return extracted keys', () => {

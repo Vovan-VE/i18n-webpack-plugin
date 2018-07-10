@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`dynamic-import should return extracted keys 1`] = `
-Object {
-  "category1": Object {
-    "Message 1": "",
-    "Message 2": "",
+"{
+  \\"category1\\": {
+    \\"Message 1\\": \\"\\",
+    \\"Message 2\\": \\"\\"
   },
-  "category2": Object {
-    "Message 3": "",
-    "Message imported": "",
-  },
-}
+  \\"category2\\": {
+    \\"Message 3\\": \\"\\",
+    \\"Message imported\\": \\"\\"
+  }
+}"
 `;
