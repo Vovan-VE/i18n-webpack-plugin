@@ -41,6 +41,7 @@ export default function processFile(entry, pluginOpts) {
     },
     plugins: [
       new I18nYii2ExtractPlugin({
+        inputFileName: `${basename(pluginOutput, '.tmp.json')}.src.json`,
         ...pluginOpts,
         outputFileName: pluginOutput,
       }),

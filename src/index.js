@@ -3,7 +3,8 @@
   Author Tobias Koppers @sokra
   Contributor Vovan-VE <vovan-ve@yandex.ru>
 */
-import { relative, isAbsolute } from 'path';
+import { isAbsolute, relative, resolve } from 'path';
+import { existsSync, readFileSync } from 'fs';
 import ConstDependency from 'webpack/lib/dependencies/ConstDependency';
 import NullFactory from 'webpack/lib/NullFactory';
 import RawSource from 'webpack-sources/lib/RawSource';
@@ -82,6 +83,40 @@ const buildUpdate = (collected, parsedModules, modules) => {
   return merged;
 };
 
+const fulfillFilePaths = (file, basePath) => {
+  let localName = file;
+  let absName;
+  if (isAbsolute(localName)) {
+    absName = localName;
+    localName = relative(basePath, localName);
+  } else {
+    absName = resolve(basePath, localName);
+  }
+  return [localName, absName];
+};
+
+const loadOldTranslations = (file, wanted) => {
+  if (!existsSync(file)) {
+    return wanted;
+  }
+  const content = readFileSync(file, 'utf8');
+  const old = JSON.parse(content);
+  const merged = {};
+  Object.keys(wanted).forEach((category) => {
+    const wantedMessages = wanted[category];
+    const oldMessages = old[category];
+    if (oldMessages) {
+      const mergedCategory = merged[category] || (merged[category] = {});
+      Object.keys(wantedMessages).forEach((message) => {
+        mergedCategory[message] = oldMessages[message] || wantedMessages[message];
+      });
+    } else {
+      merged[category] = { ...wantedMessages };
+    }
+  });
+  return merged;
+};
+
 /**
  *
  * @param {object|string} Options object
@@ -94,12 +129,13 @@ class I18nYii2ExtractPlugin {
     // currently unused but reserved
     this.hideMessage = this.options.hideMessage || false;
     this.outputFileName = this.options.outputFileName || '[name].json';
+    this.inputFileName = this.options.inputFileName || this.outputFileName;
     // use default value only in case of undefined
     ({ outputSpace: this.outputSpace = 2 } = this.options);
   }
 
   apply(compiler) {
-    // const { hideMessage } = this; // eslint-disable-line no-unused-vars
+    const { inputFileName, outputFileName } = this;
     const name = this.functionName;
     const plugin = { name: 'I18nYii2ExtractPlugin' };
     const collected = {};
@@ -128,6 +164,7 @@ class I18nYii2ExtractPlugin {
         Object.keys(byName).forEach((chunkName) => {
           chunkNames[byName[chunkName]] = chunkName;
         });
+        const completeFileName = (pattern, id) => pattern.replace(/\[name]/g, chunkNames[id]);
 
         modules.forEach((module) => {
           const { id, debugId } = module;
@@ -137,13 +174,22 @@ class I18nYii2ExtractPlugin {
           if (!chunkNames[id]) {
             return;
           }
-          let outName = this.outputFileName.replace(/\[name]/g, chunkNames[id]);
-          if (isAbsolute(outName)) {
-            outName = relative(outputPath, outName);
+          const [outLocalName, outAbsName] = fulfillFilePaths(
+            completeFileName(outputFileName, id),
+            outputPath,
+          );
+          let inAbsName;
+          if (inputFileName) {
+            [, inAbsName] = fulfillFilePaths(completeFileName(inputFileName, id), outputPath);
+          } else {
+            inAbsName = outAbsName;
           }
+
+          const updated = loadOldTranslations(inAbsName, update[debugId]);
+
           // eslint-disable-next-line no-param-reassign
-          compilationInner.assets[outName] = new RawSource(
-            JSON.stringify(update[debugId], null, this.outputSpace),
+          compilationInner.assets[outLocalName] = new RawSource(
+            JSON.stringify(updated, null, this.outputSpace),
           );
         });
 

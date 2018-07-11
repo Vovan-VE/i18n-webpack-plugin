@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-input should return merged with translations 1`] = `
+"{
+  \\"category1\\": {
+    \\"Message 1\\": \\"Translation 1\\",
+    \\"Message 2\\": \\"\\"
+  },
+  \\"category2\\": {
+    \\"Message 3\\": \\"\\"
+  }
+}"
+`;

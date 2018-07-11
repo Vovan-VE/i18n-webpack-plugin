@@ -42,12 +42,22 @@ plugins: [
 where `optionsObj` is an object with following possible properties:
 
 *   `functionName`: the default value is `"i18n.t"`, you can change it to other function name.
+
 *   `hideMessage`: the default value is `false`, which will show the warning/error message.
     If set to `true`, the message will be hidden. Currently this option is unused, but reserved.
+
+*   `inputFileName`: the default value is equal to value of `outputFileName` option. Old
+    translations will be read from this file for each output file.
+
 *   `outputFileName`: the default value is `"[name].json"`, which will control generated file name
     to save extracted messages. Relative path will resolve from configured output path.
     Following patterns are allowed:
     *   `[name]`: entry chunk name
+
+    Note that only messages wanted by analyzed entry will be written to output file. This may cause
+    a loss of old translations loaded from `inputFileName` when messages become unused in
+    corresponding entry.
+
 *   `outputSpace`: the default value is `2`. The value will pass as 3rd `space` argument to
     `JSON.stringify()` to control pretty print. You can use `null`, `0`, or `""` to disable pretty
     print. The value `undefined` will fallback to default value `2`.
