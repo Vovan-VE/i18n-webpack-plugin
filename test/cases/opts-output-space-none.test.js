@@ -11,6 +11,6 @@ describe('opts-output-space-none', () => {
     }));
 
   it('should return extracted keys', () => {
-    expect(extracted).toMatchSnapshot('opts-output-space-none.test.js');
+    expect(extracted).toMatchSnapshot();
   });
 });

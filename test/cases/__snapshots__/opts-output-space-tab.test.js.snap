@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`opts-output-space-tab.test.js 1`] = `
+exports[`opts-output-space-tab should return extracted keys 1`] = `
 "{
 	\\"category1\\": {
 		\\"Message 1\\": \\"\\",

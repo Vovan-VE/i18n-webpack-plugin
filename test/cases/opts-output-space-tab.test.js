@@ -11,6 +11,6 @@ describe('opts-output-space-tab', () => {
     }));
 
   it('should return extracted keys', () => {
-    expect(extracted).toMatchSnapshot('opts-output-space-tab.test.js');
+    expect(extracted).toMatchSnapshot();
   });
 });
