@@ -1,4 +1,4 @@
-i18n-yii2-extract-webpack-plugin
+i18n-yii-extract-webpack-plugin
 --------------------------------
 
 Fork based on [i18n Plugin][source-url] at [8a51991b5b][source-fork-base-url]
@@ -18,7 +18,7 @@ Install
 -------
 
 ```bash
-npm i -D i18n-yii2-extract-webpack-plugin
+npm i -D i18n-yii-extract-webpack-plugin
 ```
 
 Description

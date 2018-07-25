@@ -1,5 +1,5 @@
 {
-  "name": "i18n-yii2-extract-webpack-plugin",
+  "name": "i18n-yii-extract-webpack-plugin",
   "version": "2.0.0-alpha.1",
   "author": "Tobias Koppers @sokra",
   "contributors": [
@@ -62,10 +62,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vovan-ve/i18n-yii2-extract-webpack-plugin.git"
+    "url": "git+https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/vovan-ve/i18n-yii2-extract-webpack-plugin/issues"
+    "url": "https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/issues"
   },
   "pre-commit": "lint-staged",
   "lint-staged": {
