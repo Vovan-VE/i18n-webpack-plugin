@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`update-input should return merged with translations 1`] = `
-"{
+Array [
+  Object {
+    "content": "{
   \\"category1\\": {
     \\"Message 1\\": \\"Translation 1\\",
     \\"Message 2\\": \\"\\"
@@ -9,5 +11,20 @@ exports[`update-input should return merged with translations 1`] = `
   \\"category2\\": {
     \\"Message 3\\": \\"\\"
   }
-}"
+}",
+    "name": "update-input@en-US",
+  },
+  Object {
+    "content": "{
+  \\"category1\\": {
+    \\"Message 1\\": \\"Перевод 1\\",
+    \\"Message 2\\": \\"\\"
+  },
+  \\"category2\\": {
+    \\"Message 3\\": \\"\\"
+  }
+}",
+    "name": "update-input@ru-RU",
+  },
+]
 `;

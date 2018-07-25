@@ -1,0 +1,10 @@
+{
+  "category1": {
+    "Message 1": "Перевод 1",
+    "Message 2": "",
+    "Message was gone": "Перевод стал ненужен"
+  },
+  "category-was-gone": {
+    "Message 9": "Перевод 9"
+  }
+}

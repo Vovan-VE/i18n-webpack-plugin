@@ -4,33 +4,55 @@ import I18nYii2ExtractPlugin from '../src';
 
 const casesPath = join(__dirname, 'cases');
 
-export default function processFile(entry, pluginOpts) {
+const expandLanguagesMap = (name, languages, pattern) => {
+  const result = {};
+  languages.forEach((language) => {
+    result[`${name}@${language}`] = pattern.replace(/\[language]/g, language);
+  });
+  return result;
+};
+
+export default function processFile(entry, pluginOpts = {}) {
   let resolvedEntry;
   let resolvedOutput;
   let pluginOutput;
-  const result = {};
+  let pluginOutputResolved;
+
+  const { languages = ['en-US'] } = pluginOpts;
 
   if (Array.isArray(entry)) {
     resolvedEntry = {};
     resolvedOutput = '[name].tmp.js';
-    pluginOutput = '[name].tmp.json';
-    const pluginOutputResolved = {};
-    result.files = pluginOutputResolved;
+    pluginOutput = '[name].[language].tmp.json';
+    pluginOutputResolved = {};
     entry.forEach((e) => {
       const eBasename = basename(e, '.code.js');
-      const ePluginOutputBase = `${eBasename}.tmp.json`;
+      const ePluginOutputBase = `${eBasename}.[language].tmp.json`;
       resolvedEntry[eBasename] = join(casesPath, e);
-      pluginOutputResolved[ePluginOutputBase] = join(casesPath, ePluginOutputBase);
+      pluginOutputResolved = {
+        ...pluginOutputResolved,
+        ...expandLanguagesMap(
+          eBasename,
+          languages,
+          join(casesPath, ePluginOutputBase),
+        ),
+      };
     });
   } else {
     resolvedEntry = join(casesPath, entry);
-    resolvedOutput = `${basename(entry, '.code.js')}.tmp.js`;
-    const pluginOutputBasename = `${basename(entry, '.code.js')}.tmp.json`;
+    const eBasename = basename(entry, '.code.js');
+    resolvedOutput = `${eBasename}.tmp.js`;
+    const pluginOutputBasename = `${eBasename}.[language].tmp.json`;
     // here use absolute path to unsure it works
     pluginOutput = join(casesPath, pluginOutputBasename);
-    result.file = pluginOutput;
+    pluginOutputResolved = expandLanguagesMap(eBasename, languages, pluginOutput);
   }
 
+  const options = {
+    inputFileName: `${basename(pluginOutput, '.tmp.json')}.src.json`,
+    ...pluginOpts,
+    outputFileName: pluginOutput,
+  };
   const compiler = webpack({
     mode: 'none',
     entry: resolvedEntry,
@@ -40,11 +62,7 @@ export default function processFile(entry, pluginOpts) {
       libraryTarget: 'commonjs2',
     },
     plugins: [
-      new I18nYii2ExtractPlugin({
-        inputFileName: `${basename(pluginOutput, '.tmp.json')}.src.json`,
-        ...pluginOpts,
-        outputFileName: pluginOutput,
-      }),
+      new I18nYii2ExtractPlugin(options),
     ],
   });
 
@@ -61,7 +79,7 @@ export default function processFile(entry, pluginOpts) {
       }
 
       resolve({
-        ...result,
+        files: pluginOutputResolved,
         stats,
       });
     });

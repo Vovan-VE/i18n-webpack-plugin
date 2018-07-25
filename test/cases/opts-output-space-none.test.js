@@ -2,12 +2,17 @@ import fs from 'fs';
 import processFile from '../cases.setup';
 
 describe('opts-output-space-none', () => {
-  let extracted;
+  const extracted = [];
   const outputSpace = null;
 
-  beforeAll(() => processFile('simple.code.js', { outputSpace })
-    .then(({ file }) => {
-      extracted = fs.readFileSync(file, 'utf8');
+  beforeAll(() => processFile('opts-output-space-none.code.js', { outputSpace })
+    .then(({ files }) => {
+      Object.keys(files).forEach((name) => {
+        extracted.push({
+          name,
+          content: fs.readFileSync(files[name], 'utf8'),
+        });
+      });
     }));
 
   it('should return extracted keys', () => {

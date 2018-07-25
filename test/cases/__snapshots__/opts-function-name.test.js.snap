@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`options.functionName the object notation should return extracted keys 1`] = `
-"{
+Array [
+  Object {
+    "content": "{
   \\"category\\": {
     \\"key\\": \\"\\"
   }
-}"
+}",
+    "name": "opts-function-name@en-US",
+  },
+]
 `;

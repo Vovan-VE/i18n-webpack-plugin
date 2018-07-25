@@ -128,14 +128,15 @@ class I18nYii2ExtractPlugin {
     this.functionName = this.options.functionName || 'i18n.t';
     // currently unused but reserved
     this.hideMessage = this.options.hideMessage || false;
-    this.outputFileName = this.options.outputFileName || '[name].json';
+    this.outputFileName = this.options.outputFileName || '[name].[language].json';
     this.inputFileName = this.options.inputFileName || this.outputFileName;
     // use default value only in case of undefined
     ({ outputSpace: this.outputSpace = 2 } = this.options);
+    this.languages = this.options.languages || ['en-US'];
   }
 
   apply(compiler) {
-    const { inputFileName, outputFileName } = this;
+    const { inputFileName, outputFileName, languages } = this;
     const name = this.functionName;
     const plugin = { name: 'I18nYii2ExtractPlugin' };
     const collected = {};
@@ -164,7 +165,11 @@ class I18nYii2ExtractPlugin {
         Object.keys(byName).forEach((chunkName) => {
           chunkNames[byName[chunkName]] = chunkName;
         });
-        const completeFileName = (pattern, id) => pattern.replace(/\[name]/g, chunkNames[id]);
+        const completeFileName = (pattern, id, language) => (
+          pattern
+            .replace(/\[language]/g, language)
+            .replace(/\[name]/g, chunkNames[id])
+        );
 
         modules.forEach((module) => {
           const { id, debugId } = module;
@@ -174,23 +179,25 @@ class I18nYii2ExtractPlugin {
           if (!chunkNames[id]) {
             return;
           }
-          const [outLocalName, outAbsName] = fulfillFilePaths(
-            completeFileName(outputFileName, id),
-            outputPath,
-          );
-          let inAbsName;
-          if (inputFileName) {
-            [, inAbsName] = fulfillFilePaths(completeFileName(inputFileName, id), outputPath);
-          } else {
-            inAbsName = outAbsName;
-          }
+          languages.forEach((language) => {
+            const [outLocalName, outAbsName] = fulfillFilePaths(
+              completeFileName(outputFileName, id, language),
+              outputPath,
+            );
+            let inAbsName;
+            if (inputFileName) {
+              [, inAbsName] = fulfillFilePaths(completeFileName(inputFileName, id, language), outputPath);
+            } else {
+              inAbsName = outAbsName;
+            }
 
-          const updated = loadOldTranslations(inAbsName, update[debugId]);
+            const updated = loadOldTranslations(inAbsName, update[debugId]);
 
-          // eslint-disable-next-line no-param-reassign
-          compilationInner.assets[outLocalName] = new RawSource(
-            JSON.stringify(updated, null, this.outputSpace),
-          );
+            // eslint-disable-next-line no-param-reassign
+            compilationInner.assets[outLocalName] = new RawSource(
+              JSON.stringify(updated, null, this.outputSpace),
+            );
+          });
         });
 
         parsedModules = null;

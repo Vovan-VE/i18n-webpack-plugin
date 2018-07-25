@@ -2,7 +2,7 @@ import fs from 'fs';
 import processFile from '../cases.setup';
 
 describe('extract-entry-map', () => {
-  const extracted = {};
+  const extracted = [];
 
   beforeAll(() => processFile([
     'extract-entry-map-bar.code.js',
@@ -10,17 +10,17 @@ describe('extract-entry-map', () => {
   ])
     .then(({ files }) => {
       Object.keys(files).forEach((name) => {
-        extracted[name] = {
+        extracted.push({
           name,
           content: fs.readFileSync(files[name], 'utf8'),
-        };
+        });
       });
     }));
 
   it('should return extracted keys', () => {
-    Object.keys(extracted).forEach((name) => {
-      expect(extracted[name]).toMatchSnapshot();
-    });
-    // expect(extracted).toMatchSnapshot();
+    // extracted.forEach(({ content }) => {
+    //   expect(content).toMatchSnapshot();
+    // });
+    expect(extracted).toMatchSnapshot();
   });
 });

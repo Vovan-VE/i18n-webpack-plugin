@@ -1,3 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`opts-output-space-none should return extracted keys 1`] = `"{\\"category1\\":{\\"Message 1\\":\\"\\",\\"Message 2\\":\\"\\"},\\"category2\\":{\\"Message 3\\":\\"\\"}}"`;
+exports[`opts-output-space-none should return extracted keys 1`] = `
+Array [
+  Object {
+    "content": "{\\"category1\\":{\\"Message 1\\":\\"\\",\\"Message 2\\":\\"\\"},\\"category2\\":{\\"Message 3\\":\\"\\"}}",
+    "name": "opts-output-space-none@en-US",
+  },
+]
+`;

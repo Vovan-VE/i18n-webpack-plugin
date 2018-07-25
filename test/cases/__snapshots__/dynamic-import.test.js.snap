@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`dynamic-import should return extracted keys 1`] = `
-"{
+Array [
+  Object {
+    "content": "{
   \\"category1\\": {
     \\"Message 1\\": \\"\\",
     \\"Message 2\\": \\"\\"
@@ -10,5 +12,8 @@ exports[`dynamic-import should return extracted keys 1`] = `
     \\"Message 3\\": \\"\\",
     \\"Message imported\\": \\"\\"
   }
-}"
+}",
+    "name": "dynamic-import@en-US",
+  },
+]
 `;

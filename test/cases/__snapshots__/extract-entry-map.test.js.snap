@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`extract-entry-map should return extracted keys 1`] = `
-Object {
-  "content": "{
+Array [
+  Object {
+    "content": "{
   \\"category2\\": {
     \\"Message 3\\": \\"\\"
   },
@@ -13,13 +14,10 @@ Object {
     \\"Message 5\\": \\"\\"
   }
 }",
-  "name": "extract-entry-map-bar.tmp.json",
-}
-`;
-
-exports[`extract-entry-map should return extracted keys 2`] = `
-Object {
-  "content": "{
+    "name": "extract-entry-map-bar@en-US",
+  },
+  Object {
+    "content": "{
   \\"category1\\": {
     \\"Message 1\\": \\"\\",
     \\"Message 2\\": \\"\\"
@@ -29,6 +27,7 @@ Object {
     \\"Message imported\\": \\"\\"
   }
 }",
-  "name": "extract-entry-map-foo.tmp.json",
-}
+    "name": "extract-entry-map-foo@en-US",
+  },
+]
 `;

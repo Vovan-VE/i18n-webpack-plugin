@@ -3,7 +3,7 @@ import processFile from '../cases.setup';
 
 describe('options.functionName', () => {
   describe('the object notation', () => {
-    let extracted;
+    const extracted = [];
 
     beforeAll(() => {
       const options = {
@@ -11,8 +11,13 @@ describe('options.functionName', () => {
       };
 
       return processFile('opts-function-name.code.js', options)
-        .then(({ file }) => {
-          extracted = fs.readFileSync(file, 'utf8');
+        .then(({ files }) => {
+          Object.keys(files).forEach((name) => {
+            extracted.push({
+              name,
+              content: fs.readFileSync(files[name], 'utf8'),
+            });
+          });
         });
     });
 
