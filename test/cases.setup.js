@@ -20,19 +20,19 @@ export default function processFile(entry, pluginOpts = {}) {
 
   const { languages = ['en-US'] } = pluginOpts;
 
-  if (Array.isArray(entry)) {
+  if (typeof entry === 'object') {
     resolvedEntry = {};
     resolvedOutput = '[name].tmp.js';
     pluginOutput = '[name].[language].tmp.json';
     pluginOutputResolved = {};
-    entry.forEach((e) => {
-      const eBasename = basename(e, '.code.js');
-      const ePluginOutputBase = `${eBasename}.[language].tmp.json`;
-      resolvedEntry[eBasename] = join(casesPath, e);
+    Object.keys(entry).forEach((name) => {
+      const file = entry[name];
+      resolvedEntry[name] = join(casesPath, file);
+      const ePluginOutputBase = `${name}.[language].tmp.json`;
       pluginOutputResolved = {
         ...pluginOutputResolved,
         ...expandLanguagesMap(
-          eBasename,
+          name,
           languages,
           join(casesPath, ePluginOutputBase),
         ),

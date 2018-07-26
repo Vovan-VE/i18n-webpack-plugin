@@ -136,8 +136,7 @@ class I18nYii2ExtractPlugin {
   }
 
   apply(compiler) {
-    const { inputFileName, outputFileName, languages } = this;
-    const name = this.functionName;
+    const { functionName, inputFileName, outputFileName, languages } = this;
     const plugin = { name: 'I18nYii2ExtractPlugin' };
     const collected = {};
     let parsedModules;
@@ -156,6 +155,7 @@ class I18nYii2ExtractPlugin {
       compilation.hooks.record.tap(plugin, (compilationInner, records) => {
         const {
           modules,
+          options: { entry },
           compiler: { outputPath },
         } = compilationInner;
         const update = buildUpdate(collected, parsedModules, modules);
@@ -165,6 +165,12 @@ class I18nYii2ExtractPlugin {
         Object.keys(byName).forEach((chunkName) => {
           chunkNames[byName[chunkName]] = chunkName;
         });
+        if (entry && typeof entry === 'object') {
+          Object.keys(entry).forEach((name) => {
+            chunkNames[entry[name]] = name;
+          });
+        }
+
         const completeFileName = (pattern, id, language) => (
           pattern
             .replace(/\[language]/g, language)
@@ -205,7 +211,7 @@ class I18nYii2ExtractPlugin {
 
       const parserHook = normalModuleFactory.hooks.parser;
       const parserHandler = (parser) => {
-        parser.hooks.call.for(name).tap(plugin, (expr) => {
+        parser.hooks.call.for(functionName).tap(plugin, (expr) => {
           let message;
           let category;
           if (expr.arguments.length < 2) {

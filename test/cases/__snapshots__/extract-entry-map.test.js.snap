@@ -14,7 +14,7 @@ Array [
     \\"Message 5\\": \\"\\"
   }
 }",
-    "name": "extract-entry-map-bar@en-US",
+    "name": "extract-entry-map-key-bar@en-US",
   },
   Object {
     "content": "{
@@ -27,7 +27,7 @@ Array [
     \\"Message imported\\": \\"\\"
   }
 }",
-    "name": "extract-entry-map-foo@en-US",
+    "name": "extract-entry-map-key-foo@en-US",
   },
 ]
 `;
