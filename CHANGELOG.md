@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.6"></a>
+# [2.0.0-alpha.6](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2018-07-26)
+
+
+### Bug Fixes
+
+* **output:** always add new line in the end of JSON file ([dc6d4b3](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/commit/dc6d4b3))
+
+
+
 <a name="2.0.0-alpha.5"></a>
 # [2.0.0-alpha.5](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2018-07-26)
 
