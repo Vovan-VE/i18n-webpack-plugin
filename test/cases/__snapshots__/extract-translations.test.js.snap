@@ -4,9 +4,16 @@ exports[`extract-translations should return extracted keys 1`] = `
 Array [
   Object {
     "content": "{
+  \\"category\\": {
+    \\"Message\\": \\"\\"
+  },
   \\"category1\\": {
     \\"Message 1\\": \\"\\",
+    \\"Message 10\\": \\"\\",
     \\"Message 2\\": \\"\\"
+  },
+  \\"category100\\": {
+    \\"Message 100\\": \\"\\"
   },
   \\"category2\\": {
     \\"Message 3\\": \\"\\",

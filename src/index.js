@@ -5,6 +5,7 @@
 */
 import { isAbsolute, relative, resolve } from 'path';
 import { existsSync, readFileSync } from 'fs';
+import jsonStringify from 'json-stable-stringify';
 import ConstDependency from 'webpack/lib/dependencies/ConstDependency';
 import NullFactory from 'webpack/lib/NullFactory';
 import RawSource from 'webpack-sources/lib/RawSource';
@@ -117,6 +118,12 @@ const loadOldTranslations = (file, wanted) => {
   return merged;
 };
 
+const compareKeysCaseless = ({ key: aKey }, { key: bKey }) => {
+  const aI = aKey.toLowerCase();
+  const bI = bKey.toLowerCase();
+  return (aI < bI && -1) || (aI > bI && 1) || 0;
+};
+
 /**
  *
  * @param {object|string} Options object
@@ -136,8 +143,12 @@ class I18nYii2ExtractPlugin {
   }
 
   apply(compiler) {
-    const { functionName, inputFileName, outputFileName, languages } = this;
+    const { functionName, inputFileName, outputFileName, outputSpace, languages } = this;
     const plugin = { name: 'I18nYii2ExtractPlugin' };
+    const jsonOptions = {
+      cmp: compareKeysCaseless,
+      space: outputSpace,
+    };
     const collected = {};
     let parsedModules;
 
@@ -201,7 +212,8 @@ class I18nYii2ExtractPlugin {
 
             // eslint-disable-next-line no-param-reassign
             compilationInner.assets[outLocalName] = new RawSource(
-              JSON.stringify(updated, null, this.outputSpace),
+              // JSON.stringify
+              jsonStringify(updated, jsonOptions),
             );
           });
         });

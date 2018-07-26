@@ -33,6 +33,7 @@
     "webpack-defaults": "webpack-defaults"
   },
   "dependencies": {
+    "json-stable-stringify": "^1.0.1",
     "webpack-sources": "^1.1.0"
   },
   "devDependencies": {
