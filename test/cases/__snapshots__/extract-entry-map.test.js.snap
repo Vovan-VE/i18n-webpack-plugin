@@ -13,7 +13,8 @@ Array [
   \\"category4\\": {
     \\"Message 5\\": \\"\\"
   }
-}",
+}
+",
     "name": "extract-entry-map-key-bar@en-US",
   },
   Object {
@@ -26,7 +27,8 @@ Array [
     \\"Message 3\\": \\"\\",
     \\"Message imported\\": \\"\\"
   }
-}",
+}
+",
     "name": "extract-entry-map-key-foo@en-US",
   },
 ]

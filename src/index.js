@@ -212,8 +212,7 @@ class I18nYii2ExtractPlugin {
 
             // eslint-disable-next-line no-param-reassign
             compilationInner.assets[outLocalName] = new RawSource(
-              // JSON.stringify
-              jsonStringify(updated, jsonOptions),
+              `${jsonStringify(updated, jsonOptions)}\n`,
             );
           });
         });

@@ -3,7 +3,8 @@
 exports[`opts-output-space-none should return extracted keys 1`] = `
 Array [
   Object {
-    "content": "{\\"category1\\":{\\"Message 1\\":\\"\\",\\"Message 2\\":\\"\\"},\\"category2\\":{\\"Message 3\\":\\"\\"}}",
+    "content": "{\\"category1\\":{\\"Message 1\\":\\"\\",\\"Message 2\\":\\"\\"},\\"category2\\":{\\"Message 3\\":\\"\\"}}
+",
     "name": "opts-output-space-none@en-US",
   },
 ]
