@@ -22,8 +22,8 @@ const makeModulesMap = (modules) => {
           const child = dep.getReference();
           if (child) {
             const childId = child.module.debugId;
-            (children[debugId] || (children[debugId] = [])).push(childId);
-            parents[childId] = debugId;
+            (children[debugId] || (children[debugId] = {}))[childId] = childId;
+            (parents[childId] || (parents[childId] = {}))[debugId] = debugId;
           }
         });
       }
@@ -49,9 +49,10 @@ const getRootRelatedModules = (parentsMap, parsedModules) => {
       }
 
       related[debugId] = true;
-      const parentId = parentsMap[debugId];
-      if (parentId) {
-        next[parentId] = true;
+      if (parentsMap[debugId]) {
+        Object.keys(parentsMap[debugId]).forEach((parentId) => {
+          next[parentId] = true;
+        });
       } else {
         roots[debugId] = true;
       }
@@ -74,7 +75,7 @@ const mergeTranslations = (add, collected, modules, children, id) => {
 
   const childrenIds = children[id];
   if (childrenIds) {
-    childrenIds.forEach((childId) => {
+    Object.keys(childrenIds).forEach((childId) => {
       mergeTranslations(add, collected, modules, children, childId);
     });
   }
