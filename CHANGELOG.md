@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.7"></a>
+# [2.0.0-alpha.7](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2018-07-27)
+
+
+### Bug Fixes
+
+* **core:** lost extracted data on complex modules tree ([b041eaf](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/commit/b041eaf))
+
+
+
 <a name="2.0.0-alpha.6"></a>
 # [2.0.0-alpha.6](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2018-07-26)
 
