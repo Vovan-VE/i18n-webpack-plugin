@@ -14,12 +14,24 @@ const makeModulesMap = (modules) => {
   const map = {};
   const children = {};
   modules.forEach((module) => {
-    const { debugId, issuer } = module;
+    const { debugId } = module;
     map[debugId] = module;
-    if (issuer) {
-      const parentId = issuer.debugId;
-      (children[parentId] || (children[parentId] = [])).push(debugId);
+
+    function childrenFromDependency({ dependencies, blocks }) {
+      if (dependencies) {
+        dependencies.forEach((dep) => {
+          const child = dep.getReference();
+          if (child) {
+            (children[debugId] || (children[debugId] = [])).push(child.module.debugId);
+          }
+        });
+      }
+      if (blocks) {
+        blocks.forEach(childrenFromDependency);
+      }
     }
+
+    childrenFromDependency(module);
   });
   return { map, children };
 };
@@ -124,6 +136,12 @@ const compareKeysCaseless = ({ key: aKey }, { key: bKey }) => {
   return (aI < bI && -1) || (aI > bI && 1) || 0;
 };
 
+const completeFileName = (pattern, name, language) => (
+  pattern
+    .replace(/\[language]/g, language)
+    .replace(/\[name]/g, name)
+);
+
 /**
  *
  * @param {object|string} Options object
@@ -160,50 +178,41 @@ class I18nYii2ExtractPlugin {
       parsedModules = {};
 
       compilation.hooks.buildModule.tap(plugin, (module) => {
+        parsedModules[module.debugId] = true;
         collected[module.debugId] = {};
       });
 
-      compilation.hooks.record.tap(plugin, (compilationInner, records) => {
+      compilation.hooks.record.tap(plugin, (compilationInner) => {
         const {
           modules,
-          options: { entry },
           compiler: { outputPath },
         } = compilationInner;
         const update = buildUpdate(collected, parsedModules, modules);
 
-        const chunkNames = {};
-        const { byName } = records.chunks;
-        Object.keys(byName).forEach((chunkName) => {
-          chunkNames[byName[chunkName]] = chunkName;
-        });
-        if (entry && typeof entry === 'object') {
-          Object.keys(entry).forEach((name) => {
-            chunkNames[entry[name]] = name;
-          });
-        }
-
-        const completeFileName = (pattern, id, language) => (
-          pattern
-            .replace(/\[language]/g, language)
-            .replace(/\[name]/g, chunkNames[id])
-        );
-
         modules.forEach((module) => {
-          const { id, debugId } = module;
+          const { debugId } = module;
           if (!update[debugId]) {
             return;
           }
-          if (!chunkNames[id]) {
+          if (!module.isEntryModule()) {
             return;
           }
+          const chunks = module.getChunks();
+          if (chunks.length !== 1) {
+            return;
+          }
+          const { 0: { name } } = chunks;
           languages.forEach((language) => {
             const [outLocalName, outAbsName] = fulfillFilePaths(
-              completeFileName(outputFileName, id, language),
+              completeFileName(outputFileName, name, language),
               outputPath,
             );
             let inAbsName;
             if (inputFileName) {
-              [, inAbsName] = fulfillFilePaths(completeFileName(inputFileName, id, language), outputPath);
+              [, inAbsName] = fulfillFilePaths(
+                completeFileName(inputFileName, name, language),
+                outputPath,
+              );
             } else {
               inAbsName = outAbsName;
             }
