@@ -62,21 +62,32 @@ const getRootRelatedModules = (parentsMap, parsedModules) => {
   return Object.keys(roots);
 };
 
-const mergeTranslations = (add, collected, modules, children, id) => {
-  const { [id]: categories } = collected;
-  if (categories) {
-    Object.keys(categories).forEach((category) => {
-      const messages = categories[category];
-      const addToCategory = add(category);
-      Object.keys(messages).forEach(addToCategory);
-    });
-  }
+const mergeTranslations = (collected, children, rootId, addFactory) => {
+  const passed = {};
+  let current = [rootId];
+  while (current.length) {
+    const next = [];
+    current.forEach((id) => {
+      if (passed[id]) {
+        return;
+      }
+      const { [id]: categories } = collected;
+      if (categories) {
+        Object.keys(categories).forEach((category) => {
+          const messages = categories[category];
+          const addToCategory = addFactory(category);
+          Object.keys(messages).forEach(addToCategory);
+        });
+      }
 
-  const childrenIds = children[id];
-  if (childrenIds) {
-    Object.keys(childrenIds).forEach((childId) => {
-      mergeTranslations(add, collected, modules, children, childId);
+      const childrenIds = children[id];
+      if (childrenIds) {
+        next.push(...Object.keys(childrenIds));
+      }
+
+      passed[id] = true;
     });
+    current = next;
   }
 };
 
@@ -86,13 +97,12 @@ const buildUpdate = (collected, parsedModules, modules) => {
   const merged = {};
   updateRoots.forEach((id) => {
     const mergedForModule = {};
-    const add = (category) => {
+    mergeTranslations(collected, children, id, (category) => {
       const inCategory = mergedForModule[category] || (mergedForModule[category] = {});
       return (message) => {
         inCategory[message] = inCategory[message] || '';
       };
-    };
-    mergeTranslations(add, collected, modules, children, id);
+    });
     merged[id] = mergedForModule;
   });
   return merged;
