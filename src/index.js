@@ -11,18 +11,19 @@ import NullFactory from 'webpack/lib/NullFactory';
 import RawSource from 'webpack-sources/lib/RawSource';
 
 const makeModulesMap = (modules) => {
-  const map = {};
   const children = {};
+  const parents = {};
   modules.forEach((module) => {
     const { debugId } = module;
-    map[debugId] = module;
 
     function childrenFromDependency({ dependencies, blocks }) {
       if (dependencies) {
         dependencies.forEach((dep) => {
           const child = dep.getReference();
           if (child) {
-            (children[debugId] || (children[debugId] = [])).push(child.module.debugId);
+            const childId = child.module.debugId;
+            (children[debugId] || (children[debugId] = [])).push(childId);
+            parents[childId] = debugId;
           }
         });
       }
@@ -33,30 +34,31 @@ const makeModulesMap = (modules) => {
 
     childrenFromDependency(module);
   });
-  return { map, children };
+  return { children, parents };
 };
 
-const getRootRelatedModules = (modulesMap, parsedModules) => {
+const getRootRelatedModules = (parentsMap, parsedModules) => {
   const roots = {};
   const related = {};
   let list = Object.keys(parsedModules);
   while (list.length) {
     const next = {};
     list.forEach((debugId) => {
-      if (!related[debugId]) {
-        const module = modulesMap[debugId];
-        related[debugId] = module;
-        const { issuer } = module;
-        if (issuer) {
-          next[issuer.debugId] = true;
-        } else {
-          roots[debugId] = module;
-        }
+      if (related[debugId]) {
+        return;
+      }
+
+      related[debugId] = true;
+      const parentId = parentsMap[debugId];
+      if (parentId) {
+        next[parentId] = true;
+      } else {
+        roots[debugId] = true;
       }
     });
     list = Object.keys(next);
   }
-  return roots;
+  return Object.keys(roots);
 };
 
 const mergeTranslations = (add, collected, modules, children, id) => {
@@ -79,10 +81,10 @@ const mergeTranslations = (add, collected, modules, children, id) => {
 };
 
 const buildUpdate = (collected, parsedModules, modules) => {
-  const { map, children } = makeModulesMap(modules);
-  const updateRoots = getRootRelatedModules(map, parsedModules);
+  const { children, parents } = makeModulesMap(modules);
+  const updateRoots = getRootRelatedModules(parents, parsedModules);
   const merged = {};
-  Object.keys(updateRoots).forEach((id) => {
+  updateRoots.forEach((id) => {
     const mergedForModule = {};
     const add = (category) => {
       const inCategory = mergedForModule[category] || (mergedForModule[category] = {});
@@ -168,20 +170,13 @@ class I18nYii2ExtractPlugin {
       space: outputSpace,
     };
     const collected = {};
-    let parsedModules;
+    let parsedModules = {};
 
     compiler.hooks.compilation.tap(plugin, (compilation) => {
       compilation.dependencyFactories.set(ConstDependency, new NullFactory());
     });
 
     compiler.hooks.compilation.tap(plugin, (compilation, { normalModuleFactory }) => {
-      parsedModules = {};
-
-      compilation.hooks.buildModule.tap(plugin, (module) => {
-        parsedModules[module.debugId] = true;
-        collected[module.debugId] = {};
-      });
-
       compilation.hooks.record.tap(plugin, (compilationInner) => {
         const {
           modules,
@@ -226,7 +221,7 @@ class I18nYii2ExtractPlugin {
           });
         });
 
-        parsedModules = null;
+        parsedModules = {};
       });
 
       const parserHook = normalModuleFactory.hooks.parser;
