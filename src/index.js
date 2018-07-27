@@ -64,14 +64,13 @@ const getRootRelatedModules = (parentsMap, parsedModules) => {
 
 const mergeTranslations = (add, collected, modules, children, id) => {
   const { [id]: categories } = collected;
-  if (!categories) {
-    return;
+  if (categories) {
+    Object.keys(categories).forEach((category) => {
+      const messages = categories[category];
+      const addToCategory = add(category);
+      Object.keys(messages).forEach(addToCategory);
+    });
   }
-  Object.keys(categories).forEach((category) => {
-    const messages = categories[category];
-    const addToCategory = add(category);
-    Object.keys(messages).forEach(addToCategory);
-  });
 
   const childrenIds = children[id];
   if (childrenIds) {
