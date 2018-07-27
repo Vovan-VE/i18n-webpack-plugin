@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.9"></a>
+# [2.0.0-alpha.9](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.8...v2.0.0-alpha.9) (2018-07-27)
+
+
+### Bug Fixes
+
+* **core:** cannot process complex setup - too deep recursion ([521c49e](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/commit/521c49e))
+* **data:** lossing children modules on complex setup ([57c84f8](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/commit/57c84f8))
+* **data:** lossing data ([9eb0b80](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/commit/9eb0b80))
+
+
+
 <a name="2.0.0-alpha.8"></a>
 # [2.0.0-alpha.8](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.7...v2.0.0-alpha.8) (2018-07-27)
 
