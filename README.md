@@ -1,5 +1,7 @@
 i18n-yii-extract-webpack-plugin
---------------------------------
+===============================
+
+[![Package Version](https://img.shields.io/npm/v/i18n-yii-extract-webpack-plugin.svg)](https://www.npmjs.com/package/i18n-yii-extract-webpack-plugin)
 
 Fork based on [i18n Plugin][source-url] at [8a51991b5b][source-fork-base-url]
 which was a head of branch [`feature/webpack_4`][source-form-branch-url]
