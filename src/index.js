@@ -251,10 +251,13 @@ class I18nYii2ExtractPlugin {
           message = message.string;
 
           const { debugId } = parser.state.module;
-          const collectedInModule = collected[debugId] || (collected[debugId] = {});
           if (!parsedModules[debugId]) {
             parsedModules[debugId] = debugId;
+            // since this module is rebuilding completely,
+            // clear its old data on first hit in the build
+            delete collected[debugId];
           }
+          const collectedInModule = collected[debugId] || (collected[debugId] = {});
           (collectedInModule[category] || (collectedInModule[category] = {}))[message] = '';
 
           // let error = parser.state.module[__dirname];
