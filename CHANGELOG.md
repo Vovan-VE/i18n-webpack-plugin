@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-beta.0"></a>
+# [2.0.0-beta.0](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.10...v2.0.0-beta.0) (2018-08-01)
+
+
+### Bug Fixes
+
+* **data:** unused mesages did not deleted from modules became "empty" ([28e6eec](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/commit/28e6eec))
+
+
+
 <a name="2.0.0-alpha.10"></a>
 # [2.0.0-alpha.10](https://github.com/vovan-ve/i18n-yii-extract-webpack-plugin/compare/v2.0.0-alpha.9...v2.0.0-alpha.10) (2018-07-31)
 
