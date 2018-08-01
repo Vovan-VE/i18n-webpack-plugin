@@ -97,13 +97,17 @@ const buildUpdate = (collected, parsedModules, modules) => {
   const merged = {};
   updateRoots.forEach((id) => {
     const mergedForModule = {};
+    let anything = false;
     mergeTranslations(collected, children, id, (category) => {
       const inCategory = mergedForModule[category] || (mergedForModule[category] = {});
       return (message) => {
         inCategory[message] = inCategory[message] || '';
+        anything = true;
       };
     });
-    merged[id] = mergedForModule;
+    if (anything) {
+      merged[id] = mergedForModule;
+    }
   });
   return merged;
 };
@@ -187,6 +191,16 @@ class I18nYii2ExtractPlugin {
     });
 
     compiler.hooks.compilation.tap(plugin, (compilation, { normalModuleFactory }) => {
+      compilation.hooks.buildModule.tap(plugin, (module) => {
+        const { debugId } = module;
+        if (!parsedModules[debugId]) {
+          parsedModules[debugId] = debugId;
+          // since this module is rebuilding completely,
+          // clear its old data on first hit in the build
+          delete collected[debugId];
+        }
+      });
+
       compilation.hooks.record.tap(plugin, (compilationInner) => {
         const {
           modules,
@@ -251,12 +265,6 @@ class I18nYii2ExtractPlugin {
           message = message.string;
 
           const { debugId } = parser.state.module;
-          if (!parsedModules[debugId]) {
-            parsedModules[debugId] = debugId;
-            // since this module is rebuilding completely,
-            // clear its old data on first hit in the build
-            delete collected[debugId];
-          }
           const collectedInModule = collected[debugId] || (collected[debugId] = {});
           (collectedInModule[category] || (collectedInModule[category] = {}))[message] = '';
 
